@@ -1,24 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='js-morpion.css'>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="morpion.css"/>
+    <title>Morpion</title>
 </head>
 <body>
     <h1>Jeu du morpion</h1>
-    <input id="1" type="text" oninput="validation(this.id)">
-    <input id="2" type="text" oninput="validation(this.id)">
-    <input id="3" type="text" oninput="validation(this.id)"><br>
-    <input id="4" type="text" oninput="validation(this.id)">
-    <input id="5" type="text" oninput="validation(this.id)">
-    <input id="6" type="text" oninput="validation(this.id)"><br>
-    <input id="7" type="text" oninput="validation(this.id)">
-    <input id="8" type="text" oninput="validation(this.id)">
-    <input id="9" type="text" oninput="validation(this.id)"><br>
-    <p id="test">Test</p>
-    <script src='js-morpion.js'></script>
+
+    <p id="message"></p>
+    <button id="1" onclick="jouerCoup(this)">&nbsp;</button>
+    <button id="2" onclick="jouerCoup(this)">&nbsp;</button>
+    <button id="3" onclick="jouerCoup(this)">&nbsp;</button><br/>
+    <button id="4" onclick="jouerCoup(this)">&nbsp;</button>
+    <button id="5" onclick="jouerCoup(this)">&nbsp;</button>
+    <button id="6" onclick="jouerCoup(this)">&nbsp;</button><br/>
+    <button id="7" onclick="jouerCoup(this)">&nbsp;</button>
+    <button id="8" onclick="jouerCoup(this)">&nbsp;</button>
+    <button id="9" onclick="jouerCoup(this)">&nbsp;</button>
 </body>
+
+<script src="jeuMorpion.js"></script>
 </html>

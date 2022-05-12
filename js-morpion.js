@@ -1,73 +1,76 @@
-//valider que l'input utilisateur est soit O soit un X
-function validationSpecifique() {
-    //recuperer l'input utilisateur dans une variable qu'on upperCase
-    let choixUtilisateur = String(document.getElementById("case1").value).toUpperCase();
-    //   console.log(choixUtilisateur);
-    const croix = "X";
-    const rond = "O";
-    let paragrapheMessage = document.getElementById("test");
-    //On compare la saisie upperCased a rond ou croix pour valider la saisie
-    if (choixUtilisateur != croix && choixUtilisateur != rond) {
-        //si la saisie est incorrecte on efface la saisie
-        document.getElementById("case1").value = "";
-        paragrapheMessage.innerHTML = "Il faut rentrer un X ou un O"
-    } else {
-        paragrapheMessage.innerHTML = "Ok on joue!"
+class Morpion {
+
+    grille = [];
+    tourJoueur1 = true;
+    compteurCoup = 0;
+
+    constructor() {
     }
-}
-let compteur = 1;
-let premierChoix;
-function validation(id) {
-    //recuperer l'input utilisateur dans une variable qu'on upperCase
-    choixUtilisateur = document.getElementById(id).value.toUpperCase();
-    console.log(id);
-    console.log(choixUtilisateur);
-    const croix = "X";
-    const rond = "O";
-    let paragrapheMessage = document.getElementById("test");
-    //On compare la saisie upperCased a rond ou croix pour valider la saisie
-    if (choixUtilisateur != croix && choixUtilisateur != rond) {
-        //si la saisie est incorrecte on efface la saisie
-        document.getElementById(id).value = "";
-        paragrapheMessage.innerHTML = "Il faut rentrer un X ou un O"
-    } else {
-        paragrapheMessage.innerHTML = "Ok on joue!"
-        document.getElementById(id).readOnly = true;
-        if (compteur == 1) {
-            premierChoix = choixUtilisateur;
-        } else if (compteur % 2 == 0) {
-            console.log("je suis pair");
-        } else {
-            console.log("je suis impair")
+
+    jouerCoup(idCase){
+        if(typeof this.grille[idCase] != "undefined") {
+            return this.grille[idCase];
         }
-        compteur++;
-        console.log("Mon premier choix est " + premierChoix);
-        victoire();
-        // troisAlignes("1", "2", "3");
-
+        this.compteurCoup++;
+        if(this.tourJoueur1){
+            this.grille[idCase] = 'X';
+            this.tourJoueur1 = false;
+        } else {
+            this.grille[idCase] = 'O';
+            this.tourJoueur1 = true;
+        }
+        return this.grille[idCase];
     }
-}
-function troisAlignes(a, b, c) {
-    if (document.getElementById(a).value != "" && document.getElementById(a).value == document.getElementById(b).value && document.getElementById(b).value == document.getElementById(c).value) {
-        console.log("Cond1. la case n'est pas vide");
-        console.log("Cond2. a = b");
-        console.log("Cond3. b = c");
-        return true;
+
+    verif() {
+        return this.verifLigne() || this.verifColonne() || this.verifDiag();
     }
+
+    verifLigne(){
+        if(typeof this.grille[1] !== "undefined" && this.grille[1] === this.grille[2] && this.grille[1] === this.grille[3]){
+            return true;
+        } else if(typeof this.grille[4] !== "undefined" && this.grille[4] === this.grille[5] && this.grille[4] === this.grille[6]){
+            return true;
+        } else if(typeof this.grille[7] !== "undefined" && this.grille[7] === this.grille[8] && this.grille[7] === this.grille[9]){
+            return true;
+        }
+        return false;
+    }
+
+    verifColonne(){
+        if(typeof this.grille[1] !== "undefined" && this.grille[1] === this.grille[4] && this.grille[1] === this.grille[7]){
+            return true;
+        } else if(typeof this.grille[2] !== "undefined" && this.grille[2] === this.grille[5] && this.grille[2] === this.grille[8]){
+            return true;
+        } else if(typeof this.grille[3] !== "undefined" && this.grille[3] === this.grille[6] && this.grille[3] === this.grille[9]){
+            return true;
+        }
+        return false;
+    }
+
+    verifDiag(){
+        if(typeof this.grille[1] !== "undefined" && this.grille[1] === this.grille[5] && this.grille[1] === this.grille[9]){
+            return true;
+        } else if(typeof this.grille[3] !== "undefined" && this.grille[3] === this.grille[5] && this.grille[3] === this.grille[7]){
+            return true;
+        }
+        return false;
+    }
+
 }
 
-function victoire() {
-    if (
-        troisAlignes("1", "2", "3") ||
-        troisAlignes("4", "5", "6") ||
-        troisAlignes("7", "8", "9") ||
-        troisAlignes("1", "4", "7") ||
-        troisAlignes("2", "5", "8") ||
-        troisAlignes("3", "6", "9") ||
-        troisAlignes("1", "5", "9") ||
-        troisAlignes("3", "5", "7")
-    ) {
-        console.log("Vous avez gagné");
-        return true;
+let morpion = new Morpion();
+
+function jouerCoup(bouton){
+    let pion = morpion.jouerCoup(bouton.id);
+    bouton.innerHTML = pion;
+    if(morpion.verif()) {
+        document.getElementById("message").innerHTML = `Victoire du joueur ${ pion }`;
+        let boutons = document.getElementsByTagName("button");
+        for (const bouton of boutons) {
+            bouton.setAttribute("disabled","disabled");
+        }
+    } else if(morpion.compteurCoup == 9){
+        document.getElementById("message").innerHTML = `Egalité`;
     }
 }
